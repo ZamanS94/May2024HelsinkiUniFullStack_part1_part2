@@ -56,7 +56,6 @@ const App = () => {
         part3 = {part3} exercises3 = {exercises3}
       />
       <Total totalCount = {exercises1 + exercises2 + exercises3} />
-     
     </div>
   )
 }
