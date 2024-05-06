@@ -15,6 +15,8 @@ const Course = ({ course }) => {
   )
 }
 
+// have already used reduce method in previous exercise. 
+
 
 const App = () => {
   const course = {
