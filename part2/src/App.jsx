@@ -1,29 +1,4 @@
-import { useState } from 'react'
-
-const Course = ({ courses }) => {
-
-  let total = {}
-  courses.map(course => (
-    total[course.id]= course.parts.reduce((exercise, part) => exercise += part.exercises, 0)
-  )) 
-    
-  return (
-  <div>
-    {courses.map(course => (
-      <div key={course.id}>
-        <h1>{course.name}</h1>
-        {course.parts.map(part => (
-        <p key={part.id}>
-          {part.name} {part.exercises}
-        </p>
-      ))}
-      <p><b>total of {total[course.id]} exercises</b></p>
-      </div>
-      ))}
-  </div>
-  )
-}
-
+import Course from './components/Course.jsx'
 
 const App = () => {
 
@@ -72,7 +47,7 @@ const App = () => {
     }
   ]
 
-  return <Course courses={courses} />
+  return  <Course courses={courses} />
 }
 
 export default App
