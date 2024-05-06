@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Person from './components/Person.jsx'
+import _ from 'lodash'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -12,13 +13,19 @@ const App = () => {
     const personObject = {
       name: newName
     }
-  
-    setPersons(persons.concat(personObject))
-    setNewName('')
+    const doesExist = persons.find(person => _.isEqual(person, personObject))
+
+    if(doesExist){
+      window.alert(`${doesExist.name} is already added to phonebook`)
+      setNewName('')
+    }
+    else{
+      setPersons(persons.concat(personObject))
+      setNewName('')
+    }
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
