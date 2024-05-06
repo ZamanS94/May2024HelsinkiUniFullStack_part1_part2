@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const Course = ({ course }) => {
+  let total = course.parts.reduce( (exercises,part)=> exercises+=part.exercises,0)
   return (
     <div>
       <h1>{course.name}</h1>
@@ -9,6 +10,7 @@ const Course = ({ course }) => {
           {part.name} {part.exercises}
         </p>
       ))}
+      <p><b>total of {total} exercises</b></p>
     </div>
   )
 }
@@ -33,7 +35,13 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
+
     ]
   }
 
