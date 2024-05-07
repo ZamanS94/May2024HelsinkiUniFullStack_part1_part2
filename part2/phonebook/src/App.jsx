@@ -4,12 +4,16 @@ import PersonForm from './components/PersonForm.jsx'
 import Filter from './components/Filter.jsx'
 import _ from 'lodash'
 import personService from './services/persons.js'
+import Notification from './components/Notification.jsx'
+
 
 const App = () => {
+
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setSearch] = useState('')
+  const [notificationMessage, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -36,6 +40,8 @@ const App = () => {
         .update(doesExist.id,personObject)
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id === returnedPerson.id ? returnedPerson : person))
+          setMessage(`${personObject.name} has been updated`)
+          setTimeout(() => {setMessage(null)}, 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -50,6 +56,8 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setMessage(`${personObject.name} has been added`)
+        setTimeout(() => {setMessage(null)}, 5000)
         setNewName('')
         setNewNumber('')
       })
@@ -88,6 +96,7 @@ const App = () => {
     return (
       <div>
         <h2>Phonebook</h2>
+        <Notification message={notificationMessage} />
         <Filter newSearch={newSearch} handlePersonSearch={handlePersonSearch} />
         <div>
           {searchResult.map(person => <Person key={person.id} person={person} />)}
@@ -102,6 +111,7 @@ const App = () => {
         />
         <h3>Numbers</h3>
         {persons.map(person => <Person key={person.id} person={person} handleDelete = {handleDelete}/>)}
+
       </div>
     )
 }
