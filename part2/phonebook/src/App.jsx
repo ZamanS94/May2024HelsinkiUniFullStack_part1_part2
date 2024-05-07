@@ -3,7 +3,7 @@ import Person from './components/Person.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Filter from './components/Filter.jsx'
 import _ from 'lodash'
-import axios from 'axios'
+import personService from './services/persons.js'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -12,14 +12,13 @@ const App = () => {
   const [newSearch, setSearch] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
+
   console.log('render', persons.length, 'persons')
 
   const addPerson = (event) => {
@@ -37,10 +36,10 @@ const App = () => {
       setNewNumber('')
     }
     else{
-      axios
-      .post('http://localhost:3001/persons', personObject)
-      .then(response => {
-        setPersons(persons.concat(personObject))
+      personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
       })
