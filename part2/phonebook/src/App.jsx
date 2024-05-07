@@ -79,10 +79,17 @@ const App = () => {
   const handleDelete = (deletePerson) => {
     if (window.confirm(`Delete ${deletePerson.name}?`)) {
       personService.deletePerson(deletePerson)
-        .then(() => {
+        .then((response) => {
+          console.log(response)
           const updatedPersons = persons.filter(person => person.id !== deletePerson.id)
           setPersons(updatedPersons)
         })
+        .catch(error => {
+          console.log(error)
+          setMessage(`Information of ${deletePerson.name} has already been removed from server`)
+          setTimeout(() => {setMessage(null)}, 5000)
+        }
+        )
     }
   }
 

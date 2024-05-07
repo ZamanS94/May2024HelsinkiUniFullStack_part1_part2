@@ -21,7 +21,8 @@ const getAll = async () => {
   }
 
   const deletePerson = async (deleteObject) => {
-    axios.delete(`${baseUrl}/${deleteObject.id}`,deleteObject)
+    await axios.delete(`${baseUrl}/${deleteObject.id}`, deleteObject)
+
   }
   
   export default { 
