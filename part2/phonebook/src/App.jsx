@@ -28,12 +28,22 @@ const App = () => {
       number: newNumber,
       id: (Math.floor(Math.random() * (100 - persons.length)) + persons.length + 1).toString()
     }
-    const doesExist = persons.find(person => person.name === newName && person.number === newNumber)
+    const doesExist = persons.find(person => person.name === newName)
 
     if(doesExist){
-      window.alert(`${doesExist.name} is already added to phonebook`)
-      setNewName('')
-      setNewNumber('')
+      if (window.confirm(`${doesExist.name} is already added to phonebook, replace the old number with a new one?`)) {
+        personService
+        .update(doesExist.id,personObject)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id === returnedPerson.id ? returnedPerson : person))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+      else {
+        setNewName('')
+        setNewNumber('')
+      }
     }
     else{
       personService
@@ -57,7 +67,7 @@ const App = () => {
   const handlePersonSearch= (event) => {
     setSearch(event.target.value)
   }
-  
+
   const handleDelete = (deletePerson) => {
     if (window.confirm(`Delete ${deletePerson.name}?`)) {
       personService.deletePerson(deletePerson)
