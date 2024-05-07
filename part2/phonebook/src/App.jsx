@@ -26,7 +26,7 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: Math.floor(Math.random() * (100 - persons.length)) + persons.length + 1
+      id: (Math.floor(Math.random() * (100 - persons.length)) + persons.length + 1).toString()
     }
     const doesExist = persons.find(person => person.name === newName && person.number === newNumber)
 
@@ -57,9 +57,23 @@ const App = () => {
   const handlePersonSearch= (event) => {
     setSearch(event.target.value)
   }
+  
+  const handleDelete = (deletePerson) => {
+    if (window.confirm(`Delete ${deletePerson.name}?`)) {
+      personService.deletePerson(deletePerson)
+        .then(() => {
+          const updatedPersons = persons.filter(person => person.id !== deletePerson.id)
+          setPersons(updatedPersons)
+        })
+    }
+  }
 
-  const searchResult = persons.filter(person => 
-    person.name.toLocaleLowerCase().includes(newSearch.toLowerCase()))
+  let searchResult = []
+
+  if (newSearch !== '') {
+    searchResult = persons.filter(person => 
+      person.name.toLocaleLowerCase().includes(newSearch.toLowerCase()))
+  }
 
     return (
       <div>
@@ -77,7 +91,7 @@ const App = () => {
           addPerson={addPerson}
         />
         <h3>Numbers</h3>
-        {persons.map(person => <Person key={person.id} person={person} />)}
+        {persons.map(person => <Person key={person.id} person={person} handleDelete = {handleDelete}/>)}
       </div>
     )
 }
